@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Text Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js">
+    </script>
+
+    <style>
+      html,body {
+        margin : 0;
+        padding : 0;
+        height : 100%;
+        width : 100%;
+        overflow : hidden;
+      }
+
+      #test {
+        height : 100%;
+        width : 50%;
+        display : inline-block;
+      }
+
+      #result {
+        height :100%;
+        width : 50%;
+        display : inline-block;
+      }
+      #container {
+        height : 100%;
+        width : auto;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+    </style>
+  </head>
+  <body onload = 'ready()'>
+
+    <div id="container">
+
+
+      <div id="test">
+      </div>
+
+
+      <iframe id="result" frameBorder = "0">
+      </iframe>
+
+
+    </div>
+
+
+    <script type="text/javascript">
+
+      function update(){
+        var doc = document.getElementById('result').contentWindow.document;
+        doc.open()
+        doc.write(editor.getValue())
+        doc.close()
+      }
+
+
+      function editor() {
+        window.editor = ace.edit('test');
+        editor.setTheme('ace/theme/monokai');
+        editor.getSession().setMode("ace/mode/html")
+        editor.setValue(
+`<!DOCTYPE html>
+  <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+  </body>
+</html>`, -1);
+        editor.getSession().on('change', () => {
+          update();
+        })
+
+        editor.focus()
+        editor.setOptions({
+          fontFamily : 'Monaco',
+          fontSize : '16px',
+          enableLiveAutoComplete: true,
+          enableBasicAutoComplete: true,
+        });
+        editor.setShowPrintMargin(false);
+      }
+
+      function ready(){
+        editor()
+        update()
+      }
+    </script>
+  </body>
+</html>
